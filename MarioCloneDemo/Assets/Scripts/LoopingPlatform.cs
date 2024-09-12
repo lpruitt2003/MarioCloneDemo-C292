@@ -6,6 +6,7 @@ public class LoopingPlatform : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
     private float startLocation;
+    private float endLocation;
     [SerializeField] float distance;
     private Vector3 direction = Vector3.up;
 
@@ -13,19 +14,22 @@ public class LoopingPlatform : MonoBehaviour
     void Start()
     {
         startLocation = transform.position.y;
+        endLocation = startLocation + distance;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.Translate(direction * moveSpeed * Time.deltaTime);
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
+        if (transform.position.y > endLocation)
         {
-            direction = collision.transform.up;
-        } 
+            direction = Vector3.down;
+        }
+        else if (transform.position.y < startLocation)
+        {
+            direction = Vector3.up;
+        }
     }
 }
